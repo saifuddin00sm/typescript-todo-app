@@ -8,13 +8,13 @@ type TodoProviderType = {
 type TodoContextType = {
   deleteTodo: (id: number) => void;
   updateTodo: (id: number, value: string) => void;
-  addTodo: (todo: string) => void;
+  addTodo: (todo: string, id:number, type?: boolean) => void;
   completeTodo: (id: number, todo: string) => void;
   todos: TodosType[];
   completedTodo: TodosType[];
   dragStartHandler: (id: number, todo: string)=> void;
   dragOverHandler: (e: any)=> void;
-  dropHandler: ()=> void;
+  dropHandler: (type: string)=> void;
 };
 type TodosType = {
   id: number;
@@ -32,9 +32,11 @@ export const TodoProvider = ({ children }: TodoProviderType) => {
   const [completedTodo, setCompletedTodo] = useLocalStorage<TodosType[]>([], 'completedTodo');
   const [dragItem, setDragItem] = useState<TodosType | null>({} as TodosType);
 
-  const addTodo = (value: string) => {
+  const addTodo = (value: string, id: number, type?: boolean) => {
     const newTodo = [...todos];
-    newTodo.push({ id: newTodo.length + 1, todo: value });
+    if(newTodo.some((f)=> (f.id === id))) return;
+    newTodo.push({ id: type ? id : newTodo.length + 1, todo: value });
+    deleteTodo(id);
     setTodos(newTodo);
   };
 
@@ -65,11 +67,15 @@ export const TodoProvider = ({ children }: TodoProviderType) => {
     setDragItem({id, todo});
   }
 
-  const dragOverHandler = (e: any)=> {e.preventDefault(); console.log('overing')};
+  const dragOverHandler = (e: any)=> {e.preventDefault()};
 
-  const dropHandler = ()=> {
+  const dropHandler = (type: string)=> {
     if(dragItem !== null){
+     if(type === 'incomplete'){
+      addTodo(dragItem.todo, dragItem.id, true);
+     }else{
       completeTodo(dragItem.id, dragItem.todo);
+     }
     }
   }
 

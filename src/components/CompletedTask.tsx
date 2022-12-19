@@ -8,13 +8,13 @@ const CompletedTask = () => {
       <h1 className="mb-3 text-xl text-white font-medium">Completed tasks</h1>
       <ul
         style={{height: '90%'}}
-        onDrop={dropHandler}
+        onDrop={()=> dropHandler('completed')}
         onDragOver={(e) => dragOverHandler(e)}
       >
         {completedTodo.length < 1 ? (
           <li>No task completed</li>
         ) : (
-          completedTodo.map((task) => (
+          completedTodo.sort((a, b)=> (a.todo < b.todo ? -1 : a.todo > b.todo ? 1  : 0)).map((task) => (
             <Task
               key={task.id}
               id={task.id}
