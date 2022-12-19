@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.app{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.custom_containers{
+    overflow-y: auto;
+    height: 500px;
+}
+
+/* width */
+.custom_containers::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  .custom_containers::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 3px;
+  }
+   
+  /* Handle */
+  .custom_containers::-webkit-scrollbar-thumb {
+    background: rgb(52, 52, 52); 
+    border-radius: 3px;
+  }
+  
+  /* Handle on hover */
+  .custom_containers::-webkit-scrollbar-thumb:hover {
+    background: #ccc; 
+  }
